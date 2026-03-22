@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+
+  product-db:
+    image: postgres:15
+    container_name: product-db
+    environment:
+      POSTGRES_DB: product_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5436:5432"
+    volumes:
+      - product-db-data:/var/lib/postgresql/data
+      - ./init/product-db.sql:/docker-entrypoint-initdb.d/product-db.sql
+    networks:
+      - invest-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d product_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  product-db-data:
+
+networks:
+  invest-network:
+    external: true

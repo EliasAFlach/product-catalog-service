@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: product-catalog-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5436/product_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+app:
+  kafka:
+    topics:
+      product-created: product.created
+      product-updated: product.updated
+  outbox:
+    relay-delay-ms: 5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  port: 8081
